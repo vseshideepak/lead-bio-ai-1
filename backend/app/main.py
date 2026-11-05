@@ -2,10 +2,15 @@
 from pathlib import Path
 from importlib import import_module
 import sqlite3
+import sys
 
-from fastapi import FastAPI, HTTPException, Query
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from fastapi import FastAPI, HTTPException, Query  # type: ignore[reportMissingImports]
+from fastapi.middleware.cors import CORSMiddleware  # type: ignore[reportMissingImports]
+from pydantic import BaseModel, Field  # type: ignore[reportMissingImports]
 try:
     in_silico_simulator_router = import_module(
         "app.routers.in_silico_simulator"
@@ -15,36 +20,25 @@ except ModuleNotFoundError as exc:
         raise
     in_silico_simulator_router = None
 
-from app.services.research_data import (
+from .services.research_data import (
     get_dataset_summary,
     get_literature_records,
     get_concentration_records,
 )
 
-from app.services.ai_engine import (
+from .services.ai_engine import (
     search_research,
     get_research_insights,
     compare_microorganisms,
     analyze_microorganism_performance,
 )
-from app.services.soil_health_card import (
+from .services.soil_health_card import (
     get_soil_health_summary,
     get_soil_health_filters,
     get_soil_health_records,
 )
-from app.services.location import detect_location
-from app.services.pb_soil_assessment import (
-    save_pb_assessment,
-    get_pb_assessment_records,
-    get_pb_assessment_summary,
-)
-from app.services.pb_soil_assessment import (
-    save_pb_assessment,
-    get_pb_assessment_records,
-    get_pb_assessment_summary,
-    compare_pb_treatment,
-)
-from app.services.pb_soil_assessment import (
+from .services.location import detect_location
+from .services.pb_soil_assessment import (
     save_pb_assessment,
     get_pb_assessment_records,
     get_pb_assessment_summary,
@@ -87,13 +81,13 @@ def classify_organism(name):
     return "individuals"
 
 
-from app.services.prediction import (
+from .services.prediction import (
     analyze_prediction_readiness,
     calculate_observed_reduction,
     predict_soil_health,
 )
 
-from app.services.soil_monitoring import (
+from .services.soil_monitoring import (
     save_reading,
     get_latest_reading,
     get_reading_history,
@@ -114,10 +108,7 @@ if in_silico_simulator_router is not None:
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5173",
-        "http://localhost:5176",
-        "http://127.0.0.1:5173",
-        "http://127.0.0.1:5176",
+        "https://lead-bio-ai-1-2.onrender.com",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -441,7 +432,7 @@ def soil_reading_history(limit: int = 100):
         raise HTTPException(status_code=500, detail=str(error))
 
 # TELANGANA_SOIL_DISTRICT_API
-from app.services.telangana_soil import (
+from .services.telangana_soil import (
     get_districts,
     get_district,
     get_soil_survey_projects,
