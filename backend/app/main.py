@@ -108,7 +108,11 @@ if in_silico_simulator_router is not None:
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://lead-bio-ai-1-2.onrender.com",
+        "http://localhost:5173",
+        "http://localhost:5176",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:5176",
+        "https://lead-bio-ai-1-p8x7.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
