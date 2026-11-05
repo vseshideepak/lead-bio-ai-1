@@ -1,0 +1,105 @@
+========== APP.TSX STRUCTURE ==========
+const navigation = [
+  { name: 'Study Evidence', icon: BookOpen },
+  { name: 'Microorganisms', icon: Microscope },
+function App() {
+  const [active, setActive] = useState('Overview')
+  const [health, setHealth] = useState<HealthStatus | null>(null)
+  const [database, setDatabase] = useState<DatabaseStatus | null>(null)
+  const [summary, setSummary] = useState<ResearchSummary | null>(null)
+  const [organisms, setOrganisms] = useState<OrganismRecord[]>([])
+  const [concentrations, setConcentrations] = useState<ConcentrationRecord[]>([])
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [organismSearch, setOrganismSearch] = useState('')
+  const [sortColumn, setSortColumn] = useState('Organism')
+const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
+    async function loadData() {
+        const [h, d, s, o, c] = await Promise.all([
+        setOrganisms(o.records)
+        setConcentrations(c.records)
+  const totalRows = database?.tables
+  const organismQuery = organismSearch.trim().toLowerCase()
+  const filteredOrganisms = organisms.filter((record) =>
+  const sortedFilteredOrganisms = [...filteredOrganisms].sort((a, b) => {
+    const first = String(a[sortColumn as keyof OrganismRecord] ?? '')
+    const second = String(b[sortColumn as keyof OrganismRecord] ?? '')
+    const comparison = first.localeCompare(second, undefined, { numeric: true })
+  function sortOrganisms(column: string) {
+  const organismCounts = organisms.reduce<Record<string, number>>((counts, record) => {
+    const name = record.Organism?.trim() || 'Not specified'
+  const organismChartData = Object.entries(organismCounts)
+  const filteredOrganismChartData = organismChartData.filter(({ name }) =>
+    name.toLowerCase().includes(organismSearch.trim().toLowerCase())
+  const mechanismChartData = summary
+  const unitCounts = summary?.concentration_units || {}
+  return (
+              className={active === name ? 'nav-item active' : 'nav-item'}
+              onClick={() => setActive(name)}
+            Research Workspace / <b>{active}</b>
+                {active === 'Overview' ? 'Lead Research Explorer' : active}
+{active === 'Microorganisms' && (
+        <h2>Microorganisms</h2>
+        <p>Explore organisms and their reported lead bioremediation methods.</p>
+        value={organismSearch}
+        onChange={(e) => setOrganismSearch(e.target.value)}
+        Showing {filteredOrganisms.length} of {organisms.length} records
+              <th onClick={() => sortOrganisms('Organism')}>Organism</th>
+              <th onClick={() => sortOrganisms('Remediation_Method')}>Remediation Method</th>
+              <th onClick={() => sortOrganisms('Contamination_Source')}>Contamination Source</th>
+              <th onClick={() => sortOrganisms('Efficacy_Percent')}>Efficacy (%)</th>
+              <th onClick={() => sortOrganisms('pH')}>pH</th>
+              <th onClick={() => sortOrganisms('Temp_C')}>Temperature (°C)</th>
+            {sortedFilteredOrganisms.map((record, index) => (
+        {filteredOrganisms.length === 0 && (
+          <p>No matching microorganisms found.</p>
+          {active === 'AI Research' && 
+          {active === 'Overview' && (
+                <span>Microorganisms</span>
+                  {organisms.length ? 'CSV DATA' : 'LOADING'}
+                aria-label="Search microorganisms"
+                placeholder="Search microorganisms"
+                value={organismSearch}
+                onChange={(event) => setOrganismSearch(event.target.value)}
+                <b>{concentrations.length}</b>
+                Organize studies, DOIs, organisms, matrices and
+                Explore microorganisms and their reported
+                Lead cannot be biodegraded or destroyed. Microorganisms may
+
+========== API TYPES AND FUNCTIONS ==========
+export interface DatabaseStatus {
+export interface HealthStatus {
+export interface ResearchSummary {
+  organisms: Record<string, number>;
+export interface OrganismRecord {
+  Authors: string;
+  DOI: string;
+  Organism: string;
+  Efficacy_Percent: number;
+export interface ConcentrationRecord {
+  Microorganism: string;
+  "Primary-Paper DOI / Reference": string;
+export const getHealth = () =>
+export const getDatabaseStatus = () =>
+export const getResearchSummary = () =>
+export const getOrganismRecords = () =>
+  apiRequest<{ total: number; records: OrganismRecord[] }>(
+    "/api/research/organisms"
+export const getConcentrationRecords = () =>
+export interface AIResearchResponse {
+export interface AIInsights {
+export interface PredictionReadiness {
+export interface ObservedReduction {
+export interface SoilHealthAnalysis {
+export const askAIResearch = (question: string) =>
+export const getAIInsights = () =>
+// Microorganism intelligence
+export const getAIMicroorganisms = () =>
+    total_organisms: number;
+      organism: string;
+  }>("/api/ai/microorganisms");
+export const getPredictionReadiness = () =>
+export const getObservedReduction = () =>
+export const getSoilHealthAnalysis = () =>
+
+========== REPORT CREATED ==========

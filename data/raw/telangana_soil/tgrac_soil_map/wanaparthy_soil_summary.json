@@ -1,0 +1,24 @@
+{
+  "source": "TGRAC ArcGIS Soil Layer 20",
+  "districts": [
+    "Wanaparthy"
+  ],
+  "district_count": 1,
+  "unique_mandals": 14,
+  "unique_villages": 220,
+  "unique_soil_types": 8,
+  "distinct_combinations": 944,
+  "missing_soil_code_records": 944,
+  "soil_type_names": {
+    "Land Put to Non Agriculture Use": 223,
+    "Chalka Soils-Slight": 164,
+    "Salt Affected Soils": 174,
+    "Fragmental Soil": 40,
+    "Alluvial Soil": 113,
+    "Chalka Soils": 213,
+    "Dubba Soil": 6,
+    "Black Soils": 11
+  },
+  "data_type": "Mapped soil classifications",
+  "lead_measurements_available": false
+}

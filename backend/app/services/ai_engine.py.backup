@@ -1,0 +1,375 @@
+﻿import re
+import math
+from collections import defaultdict
+from typing import Any
+
+from app.services.research_data import (
+    get_literature_records,
+    get_concentration_records,
+    get_dataset_summary,
+)
+
+
+STOP_WORDS = {
+    "what", "which", "when", "where", "how", "does", "do",
+    "the", "and", "for", "with", "from", "are", "can",
+    "could", "would", "about", "tell", "me", "show",
+    "give", "explain", "compare", "is", "in", "on",
+    "of", "to", "a", "an", "this", "that", "these",
+    "those", "it", "its", "their", "they", "be", "was",
+    "were", "has", "have", "had", "by", "as", "at",
+    "between", "into", "through", "during", "after",
+    "before", "using", "used", "use", "based", "studies",
+    "study", "research", "paper", "papers",
+}
+
+# Related scientific terms are used to improve retrieval,
+# not to claim that the terms are experimentally equivalent.
+SYNONYM_GROUPS = [
+    {"lead", "pb", "lead(ii)", "lead2"},
+    {"biosorption", "biosorb", "surface binding", "passive binding"},
+    {"bioaccumulation", "accumulation", "cellular uptake", "intracellular uptake"},
+    {"bioimmobilization", "immobilization", "immobilisation"},
+    {"biomineralization", "biomineralisation", "precipitation", "mineral formation"},
+    {"bioremediation", "microbial remediation", "microbial treatment"},
+    {"soil", "contaminated soil", "soil matrix"},
+    {"ph", "acidity", "alkalinity"},
+    {"temperature", "thermal condition"},
+    {"consortium", "mixed culture", "mixed consortia", "microbial consortium"},
+    {"bacteria", "bacterial", "bacterium"},
+    {"fungi", "fungal", "fungus"},
+    {"removal efficiency", "remediation efficiency", "removal percentage"},
+    {"leaching", "leachability", "leachable"},
+    {"extractable", "bioavailable", "bioavailability"},
+]
+
+FIELD_WEIGHTS = {
+    "title": 5.0,
+    "organism": 4.5,
+    "remediation_method": 4.5,
+    "bioremediation_mechanism": 4.5,
+    "doi": 4.0,
+    "authors": 2.0,
+    "journal": 2.0,
+    "contamination_source": 3.0,
+    "lead_contamination_source": 3.0,
+    "initial_pb_concentration": 2.0,
+    "final_pb_concentration": 2.0,
+    "concentration_units": 1.5,
+    "efficacy_percent": 1.5,
+    "removal_efficiency": 1.5,
+    "ph": 1.5,
+    "temp_c": 1.5,
+    "temperature": 1.5,
+    "year": 1.0,
+}
+
+
+def clean_text(value: Any) -> str:
+    """Convert missing or non-text values safely into text."""
+    if value is None:
+        return ""
+
+    try:
+        if isinstance(value, float) and math.isnan(value):
+            return ""
+    except (TypeError, ValueError):
+        pass
+
+    text = str(value).strip()
+
+    if text.lower() in {"nan", "none", "null", "nat"}:
+        return ""
+
+    return text
+
+
+def normalize_key(value: Any) -> str:
+    """Normalize column names for consistent field weighting."""
+    return re.sub(r"[^a-z0-9]+", "_", clean_text(value).lower()).strip("_")
+
+
+def tokenize(value: str) -> list[str]:
+    """Extract searchable scientific terms."""
+    return re.findall(r"[a-z0-9]+(?:[.+-][a-z0-9]+)*", value.lower())
+
+
+def expand_query_terms(question: str) -> tuple[list[str], list[str]]:
+    """Return original keywords and related search terms."""
+    original = [
+        word for word in tokenize(question)
+        if word not in STOP_WORDS and len(word) > 1
+    ]
+
+    original = list(dict.fromkeys(original))
+    expanded = set(original)
+
+    normalized_question = question.lower()
+
+    for group in SYNONYM_GROUPS:
+        if any(
+            term in normalized_question
+            for term in group
+        ):
+            for term in group:
+                expanded.update(tokenize(term))
+
+    expanded.difference_update(STOP_WORDS)
+
+    return original, sorted(expanded)
+
+
+def score_record(
+    record: dict,
+    original_terms: list[str],
+    expanded_terms: list[str],
+    question: str,
+) -> tuple[float, list[str]]:
+    """Calculate weighted relevance for one research record."""
+    searchable_fields = {}
+
+    for key, value in record.items():
+        text = clean_text(value)
+        if text:
+            searchable_fields[normalize_key(key)] = text.lower()
+
+    matched_terms = set()
+    score = 0.0
+
+    for field, text in searchable_fields.items():
+        weight = FIELD_WEIGHTS.get(field, 1.0)
+        field_tokens = set(tokenize(text))
+
+        for term in expanded_terms:
+            if term in field_tokens:
+                score += weight
+                matched_terms.add(term)
+            elif len(term) >= 4 and term in text:
+                score += weight * 0.65
+                matched_terms.add(term)
+
+    # Reward coverage of the user's actual question.
+    original_matches = [
+        term for term in original_terms
+        if any(
+            term in set(tokenize(text)) or term in text
+            for text in searchable_fields.values()
+        )
+    ]
+
+    score += len(original_matches) * 2.0
+
+    # Exact phrase matches are useful, especially for organisms and mechanisms.
+    normalized_question = " ".join(tokenize(question))
+
+    for field, text in searchable_fields.items():
+        normalized_text = " ".join(tokenize(text))
+
+        if normalized_question and normalized_question in normalized_text:
+            score += FIELD_WEIGHTS.get(field, 1.0) * 2.0
+
+    # Avoid returning records that only match broad synonym expansions.
+    if not original_matches:
+        score *= 0.35
+
+    return round(score, 2), sorted(matched_terms)
+
+
+def search_research(question: str, limit: int = 8) -> dict:
+    """
+    Search literature and concentration records using weighted
+    scientific keyword and synonym matching.
+
+    This is evidence retrieval, not a generative AI model.
+    """
+
+    question = clean_text(question)
+
+    if not question:
+        return {
+            "answer": "Please enter a research question.",
+            "question": "",
+            "keywords": [],
+            "evidence_count": 0,
+            "matches": [],
+            "disclaimer": "No search was performed.",
+        }
+
+    original_terms, expanded_terms = expand_query_terms(question)
+
+    if not original_terms:
+        return {
+            "answer": (
+                "Please include a scientific term such as lead, Pb, "
+                "biosorption, bioimmobilization, organism, soil or pH."
+            ),
+            "question": question,
+            "keywords": [],
+            "evidence_count": 0,
+            "matches": [],
+            "disclaimer": "Evidence retrieval only.",
+        }
+
+    papers = get_literature_records()
+    concentrations = get_concentration_records()
+
+    matches = []
+
+    for record in papers:
+        score, matched_terms = score_record(
+            record, original_terms, expanded_terms, question
+        )
+
+        if score > 0:
+            matches.append({
+                "type": "literature",
+                "score": score,
+                "matched_terms": matched_terms,
+                "record": record,
+            })
+
+    for record in concentrations:
+        score, matched_terms = score_record(
+            record, original_terms, expanded_terms, question
+        )
+
+        if score > 0:
+            matches.append({
+                "type": "concentration",
+                "score": score,
+                "matched_terms": matched_terms,
+                "record": record,
+            })
+
+    matches.sort(
+        key=lambda item: (
+            item["score"],
+            item["type"] == "literature",
+        ),
+        reverse=True,
+    )
+
+    matches = matches[:max(1, min(limit, 25))]
+
+    if not matches:
+        answer = (
+            "No sufficiently relevant records were found in the current "
+            "research database. Try a specific organism, mechanism, "
+            "contamination source, concentration unit or experimental condition."
+        )
+    else:
+        answer = (
+            f"The search identified {len(matches)} relevant records from "
+            f"the available literature and concentration datasets. "
+            f"Results are ranked using field-weighted keyword matching "
+            f"and related scientific terminology. Review the individual "
+            f"records and source references before drawing conclusions."
+        )
+
+    return {
+        "answer": answer,
+        "question": question,
+        "keywords": original_terms,
+        "evidence_count": len(matches),
+        "matches": matches,
+        "disclaimer": (
+            "This is a local evidence-retrieval system, not a generative "
+            "AI model or a validated scientific prediction model. Related "
+            "terms improve search coverage but do not establish scientific "
+            "equivalence. Source-level verification is required. "
+            "Concentration units and experimental endpoints must be "
+            "evaluated separately."
+        ),
+    }
+
+
+def get_research_insights() -> dict:
+    """Provide a structured overview of the available research."""
+
+    summary = get_dataset_summary()
+
+    return {
+        "summary": summary,
+        "insights": [
+            {
+                "topic": "Lead removal",
+                "finding": (
+                    "Lead is an element and cannot be biodegraded. "
+                    "Microorganisms can bind, accumulate, immobilize "
+                    "or precipitate lead."
+                ),
+            },
+            {
+                "topic": "Experimental comparability",
+                "finding": (
+                    "Results from different matrices, units and endpoints "
+                    "must not be directly compared."
+                ),
+            },
+            {
+                "topic": "Prediction readiness",
+                "finding": (
+                    "Long-term prediction requires verified, comparable "
+                    "experimental measurements and suitable validation."
+                ),
+            },
+        ],
+    }
+
+
+def compare_microorganisms() -> dict:
+    """Summarize organisms reported in the literature records."""
+
+    papers = get_literature_records()
+    results = {}
+
+    for paper in papers:
+        organism = clean_text(paper.get("Organism"))
+
+        if not organism or organism.lower() in {
+            "nan", "none", "not specified"
+        }:
+            continue
+
+        if organism not in results:
+            results[organism] = {
+                "organism": organism,
+                "record_count": 0,
+                "methods": set(),
+                "sources": set(),
+            }
+
+        results[organism]["record_count"] += 1
+
+        method = clean_text(paper.get("Remediation_Method"))
+        source = clean_text(paper.get("Contamination_Source"))
+
+        if method:
+            results[organism]["methods"].add(method)
+
+        if source:
+            results[organism]["sources"].add(source)
+
+    output = []
+
+    for organism, data in results.items():
+        output.append({
+            "organism": organism,
+            "record_count": data["record_count"],
+            "methods": sorted(data["methods"]),
+            "contamination_sources": sorted(data["sources"]),
+        })
+
+    output.sort(
+        key=lambda item: item["record_count"],
+        reverse=True
+    )
+
+    return {
+        "total_organisms": len(output),
+        "records": output,
+        "warning": (
+            "Record frequency is not evidence of superior remediation "
+            "performance. Organisms have not been ranked by efficacy."
+        ),
+    }

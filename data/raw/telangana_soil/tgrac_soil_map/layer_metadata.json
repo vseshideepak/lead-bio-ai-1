@@ -1,0 +1,317 @@
+{
+  "currentVersion": 10.22,
+  "id": 20,
+  "name": "Soil",
+  "type": "Feature Layer",
+  "description": "",
+  "geometryType": "esriGeometryPolygon",
+  "copyrightText": "",
+  "parentLayer": {
+    "id": 13,
+    "name": "Resources Layers"
+  },
+  "subLayers": [],
+  "minScale": 0,
+  "maxScale": 0,
+  "drawingInfo": {
+    "renderer": {
+      "type": "uniqueValue",
+      "field1": "Soil_Type",
+      "field2": null,
+      "field3": null,
+      "fieldDelimiter": ", ",
+      "defaultSymbol": null,
+      "defaultLabel": null,
+      "uniqueValueInfos": [
+        {
+          "symbol": {
+            "type": "esriSFS",
+            "style": "esriSFSSolid",
+            "color": [
+              115,
+              178,
+              255,
+              255
+            ],
+            "outline": {
+              "type": "esriSLS",
+              "style": "esriSLSSolid",
+              "color": [
+                110,
+                110,
+                110,
+                255
+              ],
+              "width": 0.4
+            }
+          },
+          "value": "Alluvial Soil",
+          "label": "Alluvial Soil",
+          "description": ""
+        },
+        {
+          "symbol": {
+            "type": "esriSFS",
+            "style": "esriSFSSolid",
+            "color": [
+              156,
+              156,
+              156,
+              255
+            ],
+            "outline": {
+              "type": "esriSLS",
+              "style": "esriSLSSolid",
+              "color": [
+                110,
+                110,
+                110,
+                255
+              ],
+              "width": 0.4
+            }
+          },
+          "value": "Black Soils",
+          "label": "Black Soils",
+          "description": ""
+        },
+        {
+          "symbol": {
+            "type": "esriSFS",
+            "style": "esriSFSSolid",
+            "color": [
+              252,
+              235,
+              192,
+              255
+            ],
+            "outline": {
+              "type": "esriSLS",
+              "style": "esriSLSSolid",
+              "color": [
+                110,
+                110,
+                110,
+                255
+              ],
+              "width": 0.4
+            }
+          },
+          "value": "Chalka Soils",
+          "label": "Chalka Soils",
+          "description": ""
+        },
+        {
+          "symbol": {
+            "type": "esriSFS",
+            "style": "esriSFSSolid",
+            "color": [
+              194,
+              179,
+              252,
+              255
+            ],
+            "outline": {
+              "type": "esriSLS",
+              "style": "esriSLSSolid",
+              "color": [
+                110,
+                110,
+                110,
+                255
+              ],
+              "width": 0.4
+            }
+          },
+          "value": "Chalka Soils-Slight",
+          "label": "Chalka Soils-Slight",
+          "description": ""
+        },
+        {
+          "symbol": {
+            "type": "esriSFS",
+            "style": "esriSFSSolid",
+            "color": [
+              192,
+              212,
+              252,
+              255
+            ],
+            "outline": {
+              "type": "esriSLS",
+              "style": "esriSLSSolid",
+              "color": [
+                110,
+                110,
+                110,
+                255
+              ],
+              "width": 0.4
+            }
+          },
+          "value": "Dubba Soil",
+          "label": "Dubba Soil",
+          "description": ""
+        },
+        {
+          "symbol": {
+            "type": "esriSFS",
+            "style": "esriSFSSolid",
+            "color": [
+              252,
+              179,
+              252,
+              255
+            ],
+            "outline": {
+              "type": "esriSLS",
+              "style": "esriSLSSolid",
+              "color": [
+                110,
+                110,
+                110,
+                255
+              ],
+              "width": 0.4
+            }
+          },
+          "value": "Fragmental Soil",
+          "label": "Fragmental Soil",
+          "description": ""
+        },
+        {
+          "symbol": {
+            "type": "esriSFS",
+            "style": "esriSFSSolid",
+            "color": [
+              78,
+              78,
+              78,
+              255
+            ],
+            "outline": {
+              "type": "esriSLS",
+              "style": "esriSLSSolid",
+              "color": [
+                110,
+                110,
+                110,
+                255
+              ],
+              "width": 0.4
+            }
+          },
+          "value": "Salt Affected Soils",
+          "label": "Salt Affected Soils",
+          "description": ""
+        }
+      ]
+    },
+    "transparency": 0,
+    "labelingInfo": null
+  },
+  "defaultVisibility": false,
+  "extent": {
+    "xmin": 77.65673838500004,
+    "ymin": 15.942624858000045,
+    "xmax": 78.31347095000007,
+    "ymax": 16.627143449000073,
+    "spatialReference": {
+      "wkid": 4326,
+      "latestWkid": 4326
+    }
+  },
+  "hasAttachments": false,
+  "htmlPopupType": "esriServerHTMLPopupTypeAsHTMLText",
+  "displayField": "D_Name",
+  "typeIdField": null,
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "OBJECTID",
+      "domain": null
+    },
+    {
+      "name": "Shape",
+      "type": "esriFieldTypeGeometry",
+      "alias": "Shape",
+      "domain": null
+    },
+    {
+      "name": "Base_Survey_No",
+      "type": "esriFieldTypeString",
+      "alias": "Base_Survey_No",
+      "length": 25,
+      "domain": null
+    },
+    {
+      "name": "D_Name",
+      "type": "esriFieldTypeString",
+      "alias": "D_Name",
+      "length": 50,
+      "domain": null
+    },
+    {
+      "name": "M_Name",
+      "type": "esriFieldTypeString",
+      "alias": "M_Name",
+      "length": 50,
+      "domain": null
+    },
+    {
+      "name": "V_Name",
+      "type": "esriFieldTypeString",
+      "alias": "V_Name",
+      "length": 50,
+      "domain": null
+    },
+    {
+      "name": "DMV_Code",
+      "type": "esriFieldTypeString",
+      "alias": "DMV_Code",
+      "length": 50,
+      "domain": null
+    },
+    {
+      "name": "Soil_Type",
+      "type": "esriFieldTypeString",
+      "alias": "Soil_Type",
+      "length": 100,
+      "domain": null
+    },
+    {
+      "name": "Soil_Code",
+      "type": "esriFieldTypeString",
+      "alias": "Soil_Code",
+      "length": 20,
+      "domain": null
+    },
+    {
+      "name": "Shape_Length",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape_Length",
+      "domain": null
+    },
+    {
+      "name": "Shape_Area",
+      "type": "esriFieldTypeDouble",
+      "alias": "Shape_Area",
+      "domain": null
+    }
+  ],
+  "relationships": [],
+  "canModifyLayer": false,
+  "canScaleSymbols": false,
+  "hasLabels": false,
+  "capabilities": "Map,Query,Data",
+  "maxRecordCount": 1000,
+  "supportsStatistics": true,
+  "supportsAdvancedQueries": true,
+  "hasM": true,
+  "supportedQueryFormats": "JSON, AMF",
+  "ownershipBasedAccessControlForFeatures": {
+    "allowOthersToQuery": true
+  },
+  "useStandardizedQueries": true
+}

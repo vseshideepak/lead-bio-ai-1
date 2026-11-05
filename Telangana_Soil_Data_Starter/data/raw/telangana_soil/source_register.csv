@@ -1,0 +1,6 @@
+﻿source_name,url,potential_content,limitations
+TGRAC ArcGIS Soil feature layer,https://tgrac.telangana.gov.in/arcgis/rest/services/Agri2/Agriculture2_CropAnalysis_Layers/MapServer/20,"Soil polygons and attributes: district, mandal, village, soil type; not lab nutrient measurements",Official TGRAC service; geographic extent and field coverage must be checked
+"TGRAC 1:50,000 soil resource mapping",https://tgrac.telangana.gov.in/trac/project-agriculture.php,"Historical soil mapping for Karimnagar, Medak, Warangal, Khammam, Nalgonda (base year 2011-12)",Project documentation; underlying GIS data not included here
+TGRAC National Soil Mapping Programme,https://tgrac.telangana.gov.in/trac/agriculture-project.php,"Historical 1:10,000 mapping and soil profile/sample studies for six former districts",Project documentation; crosswalk old boundaries before using
+BHOOMI Geoportal,https://bhoomigeoportal-nbsslup.in/BHOOMI_StateWise/,"Soil organic carbon, soil reaction, EC, texture, available water capacity and related layers",Portal/layer access; export availability varies
+NRSC Indian Soil Datasets,https://www.nrsc.gov.in/nrscnew/Apps_Earth_terre_More.php?lang_code=en,"National soil texture, soil depth and soil carbon products",Raster products; spatial aggregation needed

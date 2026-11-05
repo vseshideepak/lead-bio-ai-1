@@ -1,0 +1,444 @@
+
+/* =====================================================
+   IN-SILICO LEAD SIMULATOR — WHITE & BLACK THEME
+   ===================================================== */
+
+.ils-page {
+  width: 100%;
+  max-width: 1550px;
+  margin: 0 auto;
+  padding: 30px;
+  color: #111111;
+  background: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 18px;
+}
+
+/* Headings and text */
+
+.ils-page h1,
+.ils-page h2,
+.ils-page h3,
+.ils-page h4,
+.ils-page strong,
+.ils-page p,
+.ils-page label,
+.ils-page span,
+.ils-page li,
+.ils-page small,
+.ils-page b {
+  color: #111111;
+}
+
+.ils-header,
+.ils-result-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.ils-header {
+  padding: 10px 4px 22px;
+  border-bottom: 1px solid #dddddd;
+}
+
+.ils-header h1 {
+  margin: 5px 0 10px;
+  font-size: clamp(25px, 4vw, 38px);
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.ils-header p {
+  color: #555555;
+}
+
+.ils-eyebrow {
+  color: #333333 !important;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.ils-horizon {
+  padding: 12px 18px;
+  border: 1px solid #999999;
+  border-radius: 10px;
+  color: #111111;
+  background: #f5f5f5;
+  font-weight: 800;
+  font-size: 12px;
+}
+
+/* Notice and error panels */
+
+.ils-notice {
+  padding: 16px 18px;
+  margin: 20px 0;
+  background: #f7f7f7;
+  border: 1px solid #cccccc;
+  border-radius: 12px;
+}
+
+.ils-notice strong,
+.ils-notice p {
+  color: #222222;
+}
+
+.ils-notice p {
+  margin: 7px 0 0;
+  line-height: 1.6;
+}
+
+.ils-error {
+  padding: 14px;
+  margin: 18px 0;
+  border: 1px solid #999999;
+  border-radius: 10px;
+  color: #111111;
+  background: #f5f5f5;
+}
+
+/* Main layout */
+
+.ils-form,
+.ils-results {
+  display: grid;
+  gap: 18px;
+}
+
+.ils-panel {
+  padding: 22px;
+  border: 1px solid #dddddd;
+  border-radius: 15px;
+  background: #ffffff;
+  margin-bottom: 18px;
+  box-shadow: none;
+}
+
+.ils-panel h2,
+.ils-panel h3 {
+  margin: 0 0 18px;
+}
+
+/* Form fields */
+
+.ils-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 17px;
+}
+
+.ils-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #222222;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.ils-grid input,
+.ils-grid select,
+.ils-page textarea {
+  width: 100%;
+  min-height: 43px;
+  padding: 10px 12px;
+  color: #111111;
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  outline: none;
+}
+
+.ils-grid input:focus,
+.ils-grid select:focus,
+.ils-page textarea:focus {
+  border-color: #555555;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
+}
+
+.ils-grid input::placeholder,
+.ils-page textarea::placeholder {
+  color: #777777;
+}
+
+.ils-grid select option {
+  color: #111111;
+  background: #ffffff;
+}
+
+.ils-grid small,
+.ils-help {
+  color: #555555;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* Buttons */
+
+.ils-run,
+.ils-export {
+  padding: 13px 20px;
+  color: #ffffff;
+  background: #222222;
+  border: 1px solid #222222;
+  border-radius: 9px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.ils-run:hover,
+.ils-export:hover {
+  color: #ffffff;
+  background: #444444;
+  transform: translateY(-1px);
+}
+
+.ils-run:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+/* Result heading and metrics */
+
+.ils-result-heading h2 {
+  margin: 4px 0;
+}
+
+.ils-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.ils-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 16px;
+  margin-bottom: 10px;
+  border: 1px solid #dddddd;
+  border-radius: 11px;
+  background: #ffffff;
+}
+
+.ils-metric span {
+  color: #555555;
+  font-size: 12px;
+}
+
+.ils-metric strong {
+  color: #111111;
+  font-size: 21px;
+  overflow-wrap: anywhere;
+}
+
+/* Bar charts */
+
+.ils-chart {
+  display: grid;
+  gap: 18px;
+}
+
+.ils-chart-row {
+  padding: 12px;
+  border-radius: 10px;
+  background: #f7f7f7;
+  border: 1px solid #e0e0e0;
+}
+
+.ils-chart-row > strong {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.ils-bars {
+  display: grid;
+  gap: 10px;
+}
+
+.ils-bar-line {
+  display: grid;
+  grid-template-columns: 105px minmax(50px, 1fr) 90px;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+}
+
+.ils-bar-line > span {
+  color: #444444;
+}
+
+.ils-bar-line > b {
+  color: #111111;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.ils-track {
+  width: 100%;
+  height: 12px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #e5e5e5;
+}
+
+.ils-bar {
+  height: 100%;
+  min-width: 0;
+  border-radius: 20px;
+}
+
+.ils-total {
+  background: #222222;
+}
+
+.ils-extractable {
+  background: #777777;
+}
+
+.ils-immobilized {
+  background: #aaaaaa;
+}
+
+/* Lists */
+
+.ils-panel li {
+  margin: 8px 0;
+  color: #333333;
+  line-height: 1.55;
+}
+
+/* Process diagram */
+
+.ils-process {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 13px;
+  align-items: stretch;
+}
+
+.ils-process-step {
+  position: relative;
+  padding: 19px;
+  min-width: 0;
+  border: 1px solid #dddddd;
+  border-radius: 15px;
+  background: #ffffff;
+}
+
+.ils-process-step h3 {
+  margin: 10px 0 8px;
+  font-size: 14px;
+}
+
+.ils-process-step p {
+  font-size: 12px;
+  line-height: 1.65;
+  color: #444444;
+}
+
+.ils-process-number {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #cccccc;
+  border-radius: 9px;
+  color: #111111;
+  background: #f2f2f2;
+  font-weight: 800;
+}
+
+.ils-process-arrow {
+  color: #333333;
+  font-size: 22px;
+  text-align: center;
+}
+
+.ils-diagram-note {
+  padding: 13px 16px;
+  margin-top: 13px;
+  border-left: 3px solid #555555;
+  border-radius: 8px;
+  background: #f5f5f5;
+  color: #333333;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* Recharts graph */
+
+.ils-chart-monochrome {
+  background: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 12px;
+  padding: 18px 12px;
+  min-height: 410px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ils-chart-monochrome .recharts-cartesian-axis-tick text,
+.ils-chart-monochrome .recharts-text {
+  fill: #222222;
+}
+
+.ils-chart-monochrome .recharts-legend-item-text {
+  color: #222222 !important;
+}
+
+.ils-chart-monochrome .recharts-cartesian-grid line {
+  stroke: #e0e0e0;
+}
+
+.ils-chart-monochrome .recharts-tooltip-wrapper {
+  color: #111111;
+}
+
+.ils-chart-monochrome .recharts-default-tooltip {
+  background: #ffffff !important;
+  border: 1px solid #cccccc !important;
+}
+
+.ils-chart-monochrome .recharts-tooltip-label,
+.ils-chart-monochrome .recharts-tooltip-item {
+  color: #111111 !important;
+}
+
+/* Responsive layout */
+
+@media (max-width: 850px) {
+  .ils-metrics,
+  .ils-process {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .ils-page {
+    padding: 15px;
+  }
+
+  .ils-grid,
+  .ils-metrics,
+  .ils-process {
+    grid-template-columns: 1fr;
+  }
+
+  .ils-panel {
+    padding: 16px;
+  }
+
+  .ils-bar-line {
+    grid-template-columns: 82px minmax(35px, 1fr) 72px;
+    gap: 6px;
+    font-size: 10px;
+  }
+}

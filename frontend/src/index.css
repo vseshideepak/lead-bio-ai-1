@@ -1,0 +1,124 @@
+
+:root {
+  --primary: #000000;
+  --primary-dark: #000000;
+  --primary-light: #f2f2f2;
+
+  --accent: #000000;
+  --accent-dark: #000000;
+  --accent-light: #f2f2f2;
+
+  --app-bg: #ffffff;
+  --surface: #ffffff;
+  --surface-muted: #ffffff;
+
+  --text-primary: #000000;
+  --text-secondary: #000000;
+  --text-muted: #333333;
+
+  --border: #000000;
+  --border-strong: #000000;
+
+  --shadow-sm: none;
+  --shadow-md: none;
+
+  --font-body: 'DM Sans', Arial, sans-serif;
+  --font-heading: 'Manrope', Arial, sans-serif;
+  --font-mono: Consolas, monospace;
+
+  font-family: var(--font-body);
+  color: #000000;
+  background: #ffffff;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  min-height: 100%;
+  scroll-behavior: smooth;
+  background: #ffffff;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #ffffff;
+  color: #000000;
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  text-align: left;
+  background: #ffffff;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: #000000;
+}
+
+button {
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  background: #ffffff;
+  border: 1px solid #000000;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+span,
+label,
+small,
+strong,
+b,
+th,
+td {
+  color: #000000;
+}
+
+::selection {
+  background: #d9d9d9;
+  color: #000000;
+}
+
+:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 3px;
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 13px;
+  }
+}
